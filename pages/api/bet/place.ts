@@ -1,11 +1,12 @@
-// API: 用户下注 | API: Place a bet
-import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '@/lib/prisma'
+/**
+ * Place Bet API Route
+ * POST /api/bet/place - Place a new bet
+ */
 
-interface PlaceBetRequest {
-  userId: string
-  amount: number
-}
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { placeBet } from '@/lib/services/betService'
+import { getErrorMessage, isPositiveInteger } from '@/lib/utils'
+import { BETTING_CONFIG } from '@/lib/constants'
 
 interface PlaceBetResponse {
   success: boolean
@@ -22,83 +23,36 @@ export default async function handler(
   }
 
   try {
-    const { userId, amount }: PlaceBetRequest = req.body
+    const { userId, amount } = req.body
 
-    // 验证输入 | Validate input
-    if (!userId || typeof amount !== 'number' || amount <= 0) {
+    if (!userId || !amount) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid input. Amount must be positive number',
+        error: 'Missing required fields',
       })
     }
 
-    // 检查用户是否存在 | Check if user exists
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    })
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        error: 'User not found',
-      })
-    }
-
-    // 计算当前余额 | Calculate current balance
-    const ledgerEntries = await prisma.ledgerEntry.findMany({
-      where: { userId },
-      select: { type: true, amount: true },
-    })
-
-    const balance = ledgerEntries.reduce((acc, entry) => {
-      if (entry.type === 'DEPOSIT' || entry.type === 'BET_CREDIT') {
-        return acc + entry.amount
-      } else if (entry.type === 'BET_DEBIT') {
-        return acc - entry.amount
-      }
-      return acc
-    }, 0)
-
-    // 检查余额是否足够 | Check if balance is sufficient
-    if (balance < amount) {
+    if (!isPositiveInteger(amount)) {
       return res.status(400).json({
         success: false,
-        error: `Insufficient balance. Current balance: ${balance}, required: ${amount}`,
+        error: `Invalid amount. Must be at least ${BETTING_CONFIG.MIN_BET_AMOUNT}`,
       })
     }
 
-    // 使用事务确保数据一致性 | Use transaction to ensure data consistency
-    const result = await prisma.$transaction(async (tx) => {
-      // 创建 BET_DEBIT 账本条目 | Create BET_DEBIT ledger entry
-      await tx.ledgerEntry.create({
-        data: {
-          userId,
-          type: 'BET_DEBIT',
-          amount,
-        },
-      })
-
-      // 创建投注记录 | Create bet record
-      const bet = await tx.bet.create({
-        data: {
-          userId,
-          amount,
-          status: 'PLACED',
-        },
-      })
-
-      return bet
-    })
+    const numAmount = typeof amount === 'string' ? parseInt(amount) : amount
+    const bet = await placeBet(userId, numAmount)
 
     res.status(200).json({
       success: true,
-      betId: result.id,
+      betId: bet.id,
     })
   } catch (error) {
     console.error('Error placing bet:', error)
-    res.status(500).json({
+    const message = getErrorMessage(error)
+    const statusCode = message === 'Insufficient balance' ? 400 : 500
+    res.status(statusCode).json({
       success: false,
-      error: 'Failed to place bet',
+      error: message,
     })
   }
 }

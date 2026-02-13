@@ -1,15 +1,15 @@
-// API: 管理员为用户充值 | API: Admin deposits balance for user
-import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '@/lib/prisma'
+/**
+ * Deposit API Route
+ * POST /api/deposit - Deposit funds for a user
+ */
 
-interface DepositRequest {
-  userId: string
-  amount: number
-}
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { depositFunds } from '@/lib/services/userService'
+import { getErrorMessage, isPositiveInteger } from '@/lib/utils'
+import { BETTING_CONFIG } from '@/lib/constants'
 
 interface DepositResponse {
   success: boolean
-  ledgerEntryId?: string
   error?: string
 }
 
@@ -22,46 +22,30 @@ export default async function handler(
   }
 
   try {
-    const { userId, amount }: DepositRequest = req.body
+    const { userId, amount } = req.body
 
-    // 验证输入 | Validate input
-    if (!userId || typeof amount !== 'number' || amount <= 0) {
-      return res.status(400).json({
+    if (!userId || !amount) {
+      return res.status(400).json({ 
         success: false,
-        error: 'Invalid input. Amount must be positive number',
+        error: 'Missing required fields' 
       })
     }
 
-    // 检查用户是否存在 | Check if user exists
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    })
-
-    if (!user) {
-      return res.status(404).json({
+    if (!isPositiveInteger(amount)) {
+      return res.status(400).json({ 
         success: false,
-        error: 'User not found',
+        error: `Invalid amount. Must be at least ${BETTING_CONFIG.MIN_DEPOSIT_AMOUNT}` 
       })
     }
 
-    // 创建存款账本条目 | Create deposit ledger entry
-    const ledgerEntry = await prisma.ledgerEntry.create({
-      data: {
-        userId,
-        type: 'DEPOSIT',
-        amount,
-      },
-    })
+    const numAmount = typeof amount === 'string' ? parseInt(amount) : amount
+    await depositFunds(userId, numAmount)
 
-    res.status(200).json({
-      success: true,
-      ledgerEntryId: ledgerEntry.id,
-    })
+    res.status(200).json({ success: true })
   } catch (error) {
-    console.error('Error creating deposit:', error)
-    res.status(500).json({
-      success: false,
-      error: 'Failed to create deposit',
-    })
+    console.error('Error processing deposit:', error)
+    const message = getErrorMessage(error)
+    const statusCode = message === 'User not found' ? 404 : 500
+    res.status(statusCode).json({ success: false, error: message })
   }
 }

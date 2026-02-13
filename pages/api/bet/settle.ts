@@ -1,12 +1,12 @@
-// API: 结算投注 | API: Settle a bet
-import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '@/lib/prisma'
-import type { BetResult } from '@/lib/types'
+/**
+ * Settle Bet API Route
+ * POST /api/bet/settle - Settle a bet with WIN/LOSE/VOID result
+ */
 
-interface SettleBetRequest {
-  betId: string
-  result: BetResult // 'WIN' | 'LOSE' | 'VOID'
-}
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { settleBet } from '@/lib/services/betService'
+import { getErrorMessage } from '@/lib/utils'
+import type { BetResult } from '@/lib/types'
 
 interface SettleBetResponse {
   success: boolean
@@ -23,81 +23,37 @@ export default async function handler(
   }
 
   try {
-    const { betId, result }: SettleBetRequest = req.body
+    const { betId, result } = req.body
 
-    // 验证输入 | Validate input
-    if (!betId || !result || !['WIN', 'LOSE', 'VOID'].includes(result)) {
+    if (!betId || !result) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid input. Result must be WIN, LOSE, or VOID',
+        error: 'Missing required fields',
       })
     }
 
-    // 获取投注记录 | Get bet record
-    const bet = await prisma.bet.findUnique({
-      where: { id: betId },
-    })
-
-    if (!bet) {
-      return res.status(404).json({
-        success: false,
-        error: 'Bet not found',
-      })
-    }
-
-    // 检查投注状态 | Check bet status
-    if (bet.status !== 'PLACED') {
+    if (!['WIN', 'LOSE', 'VOID'].includes(result)) {
       return res.status(400).json({
         success: false,
-        error: 'Bet is not in PLACED status. Cannot settle.',
+        error: 'Invalid result. Must be WIN, LOSE, or VOID',
       })
     }
 
-    // 计算赔付金额 | Calculate payout amount
-    // WIN: 赔付 = 投注金额 * 2 | WIN: payout = amount * 2
-    // LOSE: 赔付 = 0 | LOSE: payout = 0
-    // VOID: 赔付 = 投注金额（退还）| VOID: payout = amount (refund)
-    let payoutAmount = 0
-    if (result === 'WIN') {
-      payoutAmount = bet.amount * 2
-    } else if (result === 'VOID') {
-      payoutAmount = bet.amount
-    }
-
-    // 使用事务确保数据一致性 | Use transaction to ensure data consistency
-    await prisma.$transaction(async (tx) => {
-      // 如果有赔付，创建 BET_CREDIT 账本条目 | If there's payout, create BET_CREDIT ledger entry
-      if (payoutAmount > 0) {
-        await tx.ledgerEntry.create({
-          data: {
-            userId: bet.userId,
-            type: 'BET_CREDIT',
-            amount: payoutAmount,
-          },
-        })
-      }
-
-      // 更新投注记录 | Update bet record
-      await tx.bet.update({
-        where: { id: betId },
-        data: {
-          status: 'SETTLED',
-          result,
-          payoutAmount,
-          settledAt: new Date(),
-        },
-      })
-    })
+    const bet = await settleBet(betId, result as BetResult)
 
     res.status(200).json({
       success: true,
-      payoutAmount,
+      payoutAmount: bet.payoutAmount,
     })
   } catch (error) {
     console.error('Error settling bet:', error)
-    res.status(500).json({
+    const message = getErrorMessage(error)
+    const statusCode = 
+      message === 'Bet not found' ? 404 :
+      message === 'Bet already settled' ? 400 : 500
+    res.status(statusCode).json({
       success: false,
-      error: 'Failed to settle bet',
+      error: message,
     })
   }
 }
