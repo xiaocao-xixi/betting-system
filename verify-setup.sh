@@ -11,9 +11,27 @@ echo "1️⃣ 检查 Node.js 版本... | Checking Node.js version..."
 if command -v node &> /dev/null; then
     NODE_VERSION=$(node -v)
     echo "   ✅ Node.js 已安装: $NODE_VERSION | Node.js installed: $NODE_VERSION"
+    
+    # 检查 Node 版本是否 >= 20.9.0
+    # Extract version number and compare
+    NODE_MAJOR=$(echo $NODE_VERSION | sed 's/v//' | cut -d. -f1)
+    NODE_MINOR=$(echo $NODE_VERSION | sed 's/v//' | cut -d. -f2)
+    
+    if [ "$NODE_MAJOR" -lt 20 ] || ([ "$NODE_MAJOR" -eq 20 ] && [ "$NODE_MINOR" -lt 9 ]); then
+        echo ""
+        echo "   ❌ 错误：Node.js 版本过低！| Error: Node.js version too old!"
+        echo "   当前版本 | Current version: $NODE_VERSION"
+        echo "   需要版本 | Required version: >= 20.9.0"
+        echo ""
+        echo "   请升级 Node.js | Please upgrade Node.js:"
+        echo "   - 下载地址 | Download: https://nodejs.org/"
+        echo "   - 详细说明 | Details: TROUBLESHOOTING.md"
+        exit 1
+    fi
 else
     echo "   ❌ Node.js 未安装 | Node.js not installed"
-    echo "   请安装 Node.js 18+ | Please install Node.js 18+"
+    echo "   请安装 Node.js 20.9.0+ | Please install Node.js 20.9.0+"
+    echo "   下载地址 | Download: https://nodejs.org/"
     exit 1
 fi
 

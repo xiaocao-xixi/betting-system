@@ -2,6 +2,84 @@
 
 ## 🚨 常见错误 | Common Errors
 
+### ❌ 错误 0: Node.js 版本过低
+
+**完整错误信息：**
+```
+npm WARN EBADENGINE Unsupported engine {
+npm WARN EBADENGINE   package: 'next@16.1.6',
+npm WARN EBADENGINE   required: { node: '>=20.9.0' },
+npm WARN EBADENGINE   current: { node: 'v18.18.2', npm: '10.2.1' }
+npm WARN EBADENGINE }
+```
+
+或者 `better-sqlite3` 编译错误：
+```
+gyp ERR! find VS could not find a version of Visual Studio 2017 or newer to use
+```
+
+**原因 | Cause:**
+您的 Node.js 版本过低。本项目需要 **Node.js 20.9.0 或更高版本**。
+
+Your Node.js version is too old. This project requires **Node.js 20.9.0 or higher**.
+
+**解决方案 | Solution:**
+
+**1. 检查当前 Node 版本 | Check current Node version:**
+```bash
+node -v
+```
+
+**2. 如果版本低于 20.9.0，请升级 Node.js:**
+
+**If version is lower than 20.9.0, upgrade Node.js:**
+
+**Windows 用户 | Windows Users:**
+- 访问 https://nodejs.org/
+- 下载并安装 LTS 版本（Long Term Support）
+- 当前推荐版本：Node.js 20.x 或 22.x
+
+**Mac 用户（使用 Homebrew）| Mac Users (with Homebrew):**
+```bash
+# 安装 nvm (Node Version Manager)
+brew install nvm
+
+# 安装 Node 20
+nvm install 20
+nvm use 20
+```
+
+**Linux 用户 | Linux Users:**
+```bash
+# 使用 nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+nvm install 20
+nvm use 20
+```
+
+**3. 验证新版本 | Verify new version:**
+```bash
+node -v  # 应该显示 v20.x.x 或更高
+npm -v   # 应该显示 10.x.x 或更高
+```
+
+**4. 重新安装依赖 | Reinstall dependencies:**
+```bash
+# 清理旧的安装（如果有）
+rm -rf node_modules package-lock.json
+
+# 重新安装
+npm install
+```
+
+**💡 提示 | Tip:**
+- **Node 20 是长期支持版本，推荐使用**
+- **Node 20 is LTS version, recommended**
+- 不要使用 Node 18 或更低版本
+- Don't use Node 18 or lower versions
+
+---
+
 ### ❌ 错误 1: 'next' 不是内部或外部命令
 
 **完整错误信息：**

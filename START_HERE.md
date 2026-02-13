@@ -1,5 +1,24 @@
 # 🚀 从这里开始 | START HERE
 
+## ⚠️ 重要：检查 Node.js 版本 | IMPORTANT: Check Node.js Version
+
+**在开始之前，请确保您的 Node.js 版本 >= 20.9.0**
+
+**Before starting, ensure your Node.js version >= 20.9.0**
+
+```bash
+node -v
+```
+
+**如果版本低于 20.9.0，请先升级：**
+
+**If version is lower than 20.9.0, upgrade first:**
+
+- 下载地址 | Download: https://nodejs.org/
+- 详细说明 | Details: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md#错误-0-nodejs-版本过低)
+
+---
+
 ## 您刚克隆了仓库？请按以下步骤操作！
 ## Just cloned the repository? Follow these steps!
 

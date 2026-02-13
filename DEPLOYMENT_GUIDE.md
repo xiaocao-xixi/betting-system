@@ -18,8 +18,10 @@ If you see "'next' is not recognized" error, it means you skipped the installati
 ### 方法1: 本地 Node.js 部署 | Method 1: Local Node.js Deployment
 
 **前置要求 | Prerequisites:**
-- Node.js 18+ 
-- npm 或 yarn | npm or yarn
+- **Node.js 20.9.0 或更高版本** | **Node.js 20.9.0 or higher** ⚠️
+  - 检查版本 | Check version: `node -v`
+  - 如果版本过低，请参考 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md#错误-0-nodejs-版本过低)
+- npm 10+ 或 yarn | npm 10+ or yarn
 
 **步骤 | Steps:**
 

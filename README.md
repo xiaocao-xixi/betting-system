@@ -6,6 +6,27 @@ A full-stack betting system built with Next.js, Prisma, SQLite, and Docker.
 
 ## ⚠️ 重要提示 | IMPORTANT
 
+### Node.js 版本要求 | Node.js Version Requirement
+
+**本项目需要 Node.js 20.9.0 或更高版本！**  
+**This project requires Node.js 20.9.0 or higher!**
+
+```bash
+# 检查您的 Node 版本 | Check your Node version
+node -v
+
+# 如果版本低于 20.9.0，请升级 Node.js
+# If version is lower than 20.9.0, please upgrade Node.js
+# 下载地址 | Download: https://nodejs.org/
+```
+
+**为什么需要 Node 20+？| Why Node 20+?**
+- Next.js 16 需要 Node >= 20.9.0
+- React 19 需要较新的 Node 版本
+- 更好的性能和安全性
+
+### 安装依赖 | Install Dependencies
+
 **首次使用前必须先安装依赖！| You MUST install dependencies before first use!**
 
 ```bash
@@ -16,6 +37,10 @@ npm install    # ← 必须先运行这个！| MUST run this first!
 **Getting "'next' is not recognized" error?**
 
 👉 这说明您还没有运行 `npm install`，请查看 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
+**遇到 Node 版本错误？| Getting Node version error?**
+
+👉 请升级到 Node 20.9.0 或更高版本 | Please upgrade to Node 20.9.0 or higher
 
 ## ✅ 系统已就绪 | System Ready
 
@@ -241,9 +266,12 @@ Get bet history for a user.
 
 ## 🚀 Local Development | 本地开发
 
-### Prerequisites
-- Node.js 18+
-- npm or yarn
+### Prerequisites | 前置要求
+
+- **Node.js 20.9.0 或更高版本** | **Node.js 20.9.0 or higher** ⚠️
+  - 检查版本 | Check version: `node -v`
+  - 下载 | Download: https://nodejs.org/
+- npm 10+ 或 yarn | npm 10+ or yarn
 
 ### 🎯 一键验证脚本 | One-Click Verification Script
 

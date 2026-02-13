@@ -11,9 +11,27 @@ node -v >nul 2>&1
 if %errorlevel% equ 0 (
     for /f "tokens=*" %%a in ('node -v') do set NODE_VERSION=%%a
     echo    ✅ Node.js 已安装: %NODE_VERSION% ^| Node.js installed: %NODE_VERSION%
+    
+    REM 检查版本是否 >= 20.9.0
+    REM Extract major version (remove 'v' and get first number)
+    set VERSION_STR=%NODE_VERSION:v=%
+    for /f "tokens=1 delims=." %%i in ("%VERSION_STR%") do set NODE_MAJOR=%%i
+    
+    if %NODE_MAJOR% LSS 20 (
+        echo.
+        echo    ❌ 错误：Node.js 版本过低！^| Error: Node.js version too old!
+        echo    当前版本 ^| Current version: %NODE_VERSION%
+        echo    需要版本 ^| Required version: ^>= 20.9.0
+        echo.
+        echo    请升级 Node.js ^| Please upgrade Node.js:
+        echo    - 下载地址 ^| Download: https://nodejs.org/
+        echo    - 详细说明 ^| Details: TROUBLESHOOTING.md
+        exit /b 1
+    )
 ) else (
     echo    ❌ Node.js 未安装 ^| Node.js not installed
-    echo    请安装 Node.js 18+ ^| Please install Node.js 18+
+    echo    请安装 Node.js 20.9.0+ ^| Please install Node.js 20.9.0+
+    echo    下载地址 ^| Download: https://nodejs.org/
     exit /b 1
 )
 

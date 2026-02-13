@@ -2,6 +2,18 @@
 
 ## ⚠️ 首先必须做的事 | MUST DO FIRST
 
+### 1. 检查 Node.js 版本 | Check Node.js Version
+
+```bash
+node -v    # 必须 >= 20.9.0 | Must be >= 20.9.0
+```
+
+**如果版本过低：| If version too old:**
+- 下载 Node.js 20+ | Download Node.js 20+: https://nodejs.org/
+- 详见 | See: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md#错误-0-nodejs-版本过低)
+
+### 2. 安装依赖 | Install Dependencies
+
 ```bash
 npm install    # ← 必须先运行！| MUST run first!
 ```
