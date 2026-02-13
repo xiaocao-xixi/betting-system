@@ -14,6 +14,7 @@ node -v
 
 **If version is lower than 20.9.0, upgrade first:**
 
+- 📖 **详细升级指南 | Detailed upgrade guide:** [如何升级Node.md](./如何升级Node.md)
 - 下载地址 | Download: https://nodejs.org/
 - 详细说明 | Details: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md#错误-0-nodejs-版本过低)
 

@@ -9,6 +9,7 @@ node -v    # 必须 >= 20.9.0 | Must be >= 20.9.0
 ```
 
 **如果版本过低：| If version too old:**
+- 📖 **详细升级指南 | Detailed guide:** [如何升级Node.md](./如何升级Node.md)
 - 下载 Node.js 20+ | Download Node.js 20+: https://nodejs.org/
 - 详见 | See: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md#错误-0-nodejs-版本过低)
 

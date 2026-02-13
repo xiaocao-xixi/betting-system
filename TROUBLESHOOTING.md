@@ -34,6 +34,10 @@ node -v
 
 **If version is lower than 20.9.0, upgrade Node.js:**
 
+👉 **详细升级指南 | Detailed upgrade guide:** [如何升级Node.md](./如何升级Node.md)
+
+**快速方法：**
+
 **Windows 用户 | Windows Users:**
 - 访问 https://nodejs.org/
 - 下载并安装 LTS 版本（Long Term Support）

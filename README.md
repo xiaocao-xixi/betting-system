@@ -17,6 +17,7 @@ node -v
 
 # 如果版本低于 20.9.0，请升级 Node.js
 # If version is lower than 20.9.0, please upgrade Node.js
+# 📖 详细升级指南 | Upgrade guide: 如何升级Node.md
 # 下载地址 | Download: https://nodejs.org/
 ```
 
@@ -40,6 +41,7 @@ npm install    # ← 必须先运行这个！| MUST run this first!
 
 **遇到 Node 版本错误？| Getting Node version error?**
 
+👉 **详细升级指南 | Detailed upgrade guide:** [如何升级Node.md](./如何升级Node.md)  
 👉 请升级到 Node 20.9.0 或更高版本 | Please upgrade to Node 20.9.0 or higher
 
 ## ✅ 系统已就绪 | System Ready
