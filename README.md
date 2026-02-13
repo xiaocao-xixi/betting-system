@@ -10,7 +10,50 @@ A full-stack betting system built with Next.js, Prisma, SQLite, and Docker. Feat
 - npm 10+ or yarn
 - (Optional) Docker & Docker Compose for containerized deployment
 
-### Local Development Setup
+### Automated Setup (Recommended)
+
+The easiest way to set up the project is using the automated setup scripts:
+
+**For Windows:**
+```bash
+# 1. Clone the repository
+git clone https://github.com/xiaocao-xixi/betting-system.git
+cd betting-system
+
+# 2. Run the automated setup script
+verify-setup.bat
+
+# 3. Start development server
+npm run dev
+```
+
+**For Mac/Linux:**
+```bash
+# 1. Clone the repository
+git clone https://github.com/xiaocao-xixi/betting-system.git
+cd betting-system
+
+# 2. Run the automated setup script
+chmod +x verify-setup.sh
+./verify-setup.sh
+
+# 3. Start development server
+npm run dev
+```
+
+The setup scripts automatically:
+- ✅ Check Node.js version (>= 20.9.0)
+- ✅ Check npm installation
+- ✅ Install dependencies if missing
+- ✅ Create `.env` file from template
+- ✅ Generate Prisma client
+- ✅ Run database migrations
+- ✅ Seed test data (10 users)
+- ✅ Verify the build
+
+### Manual Setup (Alternative)
+
+If you prefer manual setup or the automated script fails:
 
 ```bash
 # 1. Clone the repository
