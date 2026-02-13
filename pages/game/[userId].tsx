@@ -13,6 +13,7 @@ export default function GamePage() {
   const [bets, setBets] = useState<BetWithDetails[]>([])
   const [betAmount, setBetAmount] = useState('')
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [placing, setPlacing] = useState(false)
   const [settling, setSettling] = useState<string | null>(null)
 
@@ -22,18 +23,32 @@ export default function GamePage() {
 
     try {
       setLoading(true)
+      setError(null)
+      
       // 加载用户列表找到当前用户 | Load user list to find current user
       const usersResponse = await fetch('/api/users')
-      const users: UserWithBalance[] = await usersResponse.json()
+      const usersData = await usersResponse.json()
+      
+      // 检查错误 | Check for errors
+      if (!usersResponse.ok || usersData.error) {
+        setError(usersData.error || '获取用户信息失败 | Failed to fetch user info')
+        return
+      }
+      
+      // 确保是数组 | Ensure it's an array
+      const users: UserWithBalance[] = Array.isArray(usersData) ? usersData : []
       const currentUser = users.find((u) => u.id === userId)
       setUser(currentUser || null)
 
       // 加载投注历史 | Load bet history
       const betsResponse = await fetch(`/api/bet/history?userId=${userId}`)
-      const betsData: BetWithDetails[] = await betsResponse.json()
-      setBets(betsData)
+      const betsData = await betsResponse.json()
+      
+      // 确保是数组 | Ensure it's an array
+      setBets(Array.isArray(betsData) ? betsData : [])
     } catch (error) {
       console.error('Error loading data:', error)
+      setError('加载失败，请检查数据库是否已初始化 | Failed to load. Please check if database is initialized.')
     } finally {
       setLoading(false)
     }
@@ -117,10 +132,56 @@ export default function GamePage() {
     )
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="max-w-2xl mx-auto px-4">
+          <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded">
+            <h3 className="text-lg font-medium text-red-800 mb-2">
+              错误 | Error
+            </h3>
+            <p className="text-red-700 mb-4">{error}</p>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => router.push('/')}
+                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              >
+                返回首页 | Back to Home
+              </button>
+              <button
+                onClick={() => loadData()}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              >
+                重试 | Retry
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="text-xl">用户未找到 | User not found</div>
+        <div className="max-w-2xl mx-auto px-4">
+          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded">
+            <h3 className="text-lg font-medium text-yellow-800 mb-2">
+              用户未找到 | User not found
+            </h3>
+            <p className="text-yellow-700 mb-4">
+              无法找到指定的用户。可能数据库未初始化。
+              <br />
+              Cannot find the specified user. Database may not be initialized.
+            </p>
+            <button
+              onClick={() => router.push('/')}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              返回首页 | Back to Home
+            </button>
+          </div>
+        </div>
       </div>
     )
   }
