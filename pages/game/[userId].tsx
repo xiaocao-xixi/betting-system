@@ -1,7 +1,7 @@
 // 游戏页面 | Game Page
 // 用户可以下注、查看投注历史、结算投注 | Users can place bets, view bet history, and settle bets
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import type { UserWithBalance, BetWithDetails } from '@/lib/types'
 
@@ -17,7 +17,7 @@ export default function GamePage() {
   const [settling, setSettling] = useState<string | null>(null)
 
   // 加载用户信息和投注历史 | Load user info and bet history
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     if (!userId || typeof userId !== 'string') return
 
     try {
@@ -37,11 +37,11 @@ export default function GamePage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [userId])
 
   useEffect(() => {
     loadData()
-  }, [userId])
+  }, [loadData])
 
   // 下注 | Place bet
   const handlePlaceBet = async () => {

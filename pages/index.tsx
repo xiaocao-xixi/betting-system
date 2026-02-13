@@ -1,7 +1,7 @@
 // 用户列表页面 | User List Page
 // 显示所有用户及其余额，提供充值功能 | Show all users with balances and deposit functionality
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import type { UserWithBalance } from '@/lib/types'
 
@@ -14,7 +14,7 @@ export default function HomePage() {
   const [depositing, setDepositing] = useState(false)
 
   // 加载用户列表 | Load user list
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     try {
       setLoading(true)
       const response = await fetch('/api/users')
@@ -25,11 +25,11 @@ export default function HomePage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     loadUsers()
-  }, [])
+  }, [loadUsers])
 
   // 处理充值 | Handle deposit
   const handleDeposit = async () => {
