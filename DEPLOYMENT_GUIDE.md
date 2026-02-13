@@ -7,6 +7,14 @@ Your betting system is fully developed and ready for local deployment testing!
 
 ## 🚀 快速开始 | Quick Start
 
+### ⚠️ 重要提示 | IMPORTANT WARNING
+
+**在运行 `npm run dev` 之前，必须先运行 `npm install`！**
+**You MUST run `npm install` before running `npm run dev`!**
+
+如果看到 "'next' 不是内部或外部命令" 错误，说明您跳过了安装步骤。
+If you see "'next' is not recognized" error, it means you skipped the installation step.
+
 ### 方法1: 本地 Node.js 部署 | Method 1: Local Node.js Deployment
 
 **前置要求 | Prerequisites:**
@@ -20,7 +28,7 @@ Your betting system is fully developed and ready for local deployment testing!
 git clone https://github.com/xiaocao-xixi/betting-system.git
 cd betting-system
 
-# 2. 安装依赖 | Install dependencies
+# 2. ⚠️ 安装依赖（必须！）| Install dependencies (REQUIRED!)
 npm install
 
 # 3. 设置数据库 | Setup database
@@ -107,6 +115,34 @@ After deployment, verify all features with these steps:
 
 ## 🔍 故障排除 | Troubleshooting
 
+### ❌ 最常见错误：'next' 不是内部或外部命令
+
+**错误信息 | Error Message:**
+```
+'next' 不是内部或外部命令，也不是可运行的程序或批处理文件。
+'next' is not recognized as an internal or external command
+```
+
+**原因 | Cause:**  
+您在克隆仓库后直接运行了 `npm run dev`，但还没有安装依赖包。
+
+You ran `npm run dev` right after cloning without installing dependencies.
+
+**解决方案 | Solution:**
+```bash
+# 必须先安装依赖！| You MUST install dependencies first!
+npm install
+
+# 然后才能启动 | Then you can start
+npm run dev
+```
+
+**💡 提示：** 这是最常见的错误！请务必先运行 `npm install`。
+
+**💡 Tip:** This is the most common error! Always run `npm install` first.
+
+---
+
 ### 问题1: npm install 失败 | Issue 1: npm install fails
 **解决方案 | Solution:**
 ```bash
@@ -139,6 +175,15 @@ lsof -ti:3000 | xargs kill -9
 netstat -ano | findstr :3000
 taskkill /PID <PID> /F
 ```
+
+### 更多故障排除 | More Troubleshooting
+
+详细的故障排除指南请查看：
+For detailed troubleshooting guide, see:
+
+👉 **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)**
+
+包含所有常见错误和解决方案 | Includes all common errors and solutions
 
 ### 问题4: Docker 构建失败 | Issue 4: Docker build fails
 **解决方案 | Solution:**

@@ -1,5 +1,19 @@
 # 🎯 快速参考 | Quick Reference
 
+## ⚠️ 首先必须做的事 | MUST DO FIRST
+
+```bash
+npm install    # ← 必须先运行！| MUST run first!
+```
+
+**如果看到 "'next' 不是内部或外部命令" 错误：**  
+**If you see "'next' is not recognized" error:**
+
+👉 您忘记运行 `npm install` 了！请先安装依赖。  
+👉 You forgot to run `npm install`! Install dependencies first.
+
+---
+
 ## 立即开始 | Get Started Now
 
 ```bash

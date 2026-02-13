@@ -4,6 +4,19 @@ A full-stack betting system built with Next.js, Prisma, SQLite, and Docker.
 
 一个使用 Next.js、Prisma、SQLite 和 Docker 构建的全栈投注系统。
 
+## ⚠️ 重要提示 | IMPORTANT
+
+**首次使用前必须先安装依赖！| You MUST install dependencies before first use!**
+
+```bash
+npm install    # ← 必须先运行这个！| MUST run this first!
+```
+
+**遇到 "'next' 不是内部或外部命令" 错误？**  
+**Getting "'next' is not recognized" error?**
+
+👉 这说明您还没有运行 `npm install`，请查看 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
 ## ✅ 系统已就绪 | System Ready
 
 **系统已完成开发，可以立即部署测试！**  
@@ -22,6 +35,7 @@ A full-stack betting system built with Next.js, Prisma, SQLite, and Docker.
 - [Local Development](#local-development--本地开发)
 - [Docker Setup](#docker-setup--docker-部署)
 - [Usage Guide](#usage-guide--使用指南)
+- [Troubleshooting](#troubleshooting--故障排除)
 - [Requirements Mapping](#requirements-mapping--需求映射)
 
 ## 📖 Overview | 项目概述
@@ -445,6 +459,31 @@ betting-system/
 
 这是一个没有身份验证的演示应用程序。
 在生产环境中，应添加适当的身份验证和授权机制。
+
+## 🔧 Troubleshooting | 故障排除
+
+### 常见错误 | Common Errors
+
+**❌ 错误: 'next' 不是内部或外部命令**
+
+这是最常见的错误！说明您还没有安装依赖。
+
+**解决方案：**
+```bash
+npm install
+```
+
+**详细的故障排除指南，请查看：**  
+**For detailed troubleshooting guide, see:**
+
+👉 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
+包含以下内容 | Includes:
+- ✅ 所有常见错误的解决方案
+- ✅ 完整重置流程
+- ✅ 数据库问题处理
+- ✅ 端口占用问题
+- ✅ Windows/Mac/Linux 特定问题
 
 ## 📄 License
 
