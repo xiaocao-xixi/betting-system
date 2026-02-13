@@ -202,7 +202,7 @@ export default function GamePage() {
             <div className="flex items-center">
               <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mr-6">
                 <span className="text-white font-bold text-3xl">
-                  {user.displayName.charAt(0).toUpperCase()}
+                  {user.displayName.match(/\d+/)?.[0] || user.displayName.charAt(0).toUpperCase()}
                 </span>
               </div>
               <div>

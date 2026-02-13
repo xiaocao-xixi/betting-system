@@ -171,7 +171,7 @@ export default function UsersPage() {
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-12 w-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center">
                             <span className="text-white font-bold text-lg">
-                              {user.displayName.charAt(0).toUpperCase()}
+                              {user.displayName.match(/\d+/)?.[0] || user.displayName.charAt(0).toUpperCase()}
                             </span>
                           </div>
                           <div className="ml-4">
