@@ -1,96 +1,80 @@
-# Betting System | 投注系统
+# Betting System
 
-A full-stack betting system built with Next.js, Prisma, SQLite, and Docker.
+A full-stack betting system built with Next.js, Prisma, SQLite, and Docker. Features include user management, balance tracking through append-only ledger entries, bet placement, and settlement.
 
-一个使用 Next.js、Prisma、SQLite 和 Docker 构建的全栈投注系统。
+## 🚀 Quick Start
 
-## ⚠️ 重要提示 | IMPORTANT
+### Prerequisites
 
-### Node.js 版本要求 | Node.js Version Requirement
+- **Node.js 20.9.0 or higher** (required)
+- npm 10+ or yarn
+- (Optional) Docker & Docker Compose for containerized deployment
 
-**本项目需要 Node.js 20.9.0 或更高版本！**  
-**This project requires Node.js 20.9.0 or higher!**
-
-```bash
-# 检查您的 Node 版本 | Check your Node version
-node -v
-
-# 如果版本低于 20.9.0，请升级 Node.js
-# If version is lower than 20.9.0, please upgrade Node.js
-# 📖 详细升级指南 | Upgrade guide: 如何升级Node.md
-# 下载地址 | Download: https://nodejs.org/
-```
-
-**为什么需要 Node 20+？| Why Node 20+?**
-- Next.js 16 需要 Node >= 20.9.0
-- React 19 需要较新的 Node 版本
-- 更好的性能和安全性
-
-### 安装依赖 | Install Dependencies
-
-**首次使用前必须先安装依赖！| You MUST install dependencies before first use!**
+### Local Development Setup
 
 ```bash
-npm install    # ← 必须先运行这个！| MUST run this first!
+# 1. Clone the repository
+git clone https://github.com/xiaocao-xixi/betting-system.git
+cd betting-system
+
+# 2. Install dependencies (REQUIRED!)
+npm install
+
+# 3. Setup database
+npx prisma migrate dev --name init
+
+# 4. Generate Prisma client
+npx prisma generate
+
+# 5. Seed test data (10 users with 1000 initial balance each)
+npm run prisma:seed
+
+# 6. Start development server
+npm run dev
 ```
 
-**遇到 "'next' 不是内部或外部命令" 错误？**  
-**Getting "'next' is not recognized" error?**
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-👉 这说明您还没有运行 `npm install`，请查看 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+### Docker Setup
 
-**遇到 Node 版本错误？| Getting Node version error?**
+```bash
+# 1. Clone and navigate
+git clone https://github.com/xiaocao-xixi/betting-system.git
+cd betting-system
 
-👉 **详细升级指南 | Detailed upgrade guide:** [如何升级Node.md](./如何升级Node.md)  
-👉 请升级到 Node 20.9.0 或更高版本 | Please upgrade to Node 20.9.0 or higher
+# 2. Start containers
+docker-compose up --build
 
-## ✅ 系统已就绪 | System Ready
+# 3. Run migrations (in new terminal)
+docker-compose exec app npx prisma migrate deploy
 
-**系统已完成开发，可以立即部署测试！**  
-**The system is fully developed and ready for deployment!**
+# 4. Seed data
+docker-compose exec app npm run prisma:seed
+```
 
-👉 **快速开始 | Quick Start:** 查看 [本地开发](#local-development--本地开发) 或 [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)  
-👉 **Quick Start:** See [Local Development](#local-development--本地开发) or [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
+Access at [http://localhost:3000](http://localhost:3000)
 
-## 📋 Table of Contents | 目录
+## 📖 Overview
 
-- [Overview](#overview--项目概述)
-- [Tech Stack](#tech-stack--技术栈)
-- [Data Models](#data-models--数据模型)
-- [API Endpoints](#api-endpoints--api-接口)
-- [Features](#features--功能特性)
-- [Local Development](#local-development--本地开发)
-- [Docker Setup](#docker-setup--docker-部署)
-- [Usage Guide](#usage-guide--使用指南)
-- [Troubleshooting](#troubleshooting--故障排除)
-- [Requirements Mapping](#requirements-mapping--需求映射)
+This betting system provides:
+- **User Management**: View all users with real-time balance tracking
+- **Deposits**: Admin can add funds to user accounts
+- **Betting**: Users can place bets with balance validation
+- **Settlement**: Settle bets with WIN (2x), LOSE (0x), or VOID (refund) outcomes
+- **History**: Complete bet history with timestamps
+- **Ledger System**: Append-only ledger ensures balance integrity
 
-## 📖 Overview | 项目概述
+## 🛠 Tech Stack
 
-This is a simple betting system that allows users to:
-- Deposit funds
-- Place bets
-- Settle bets (WIN/LOSE/VOID)
-- View bet history
-- Track balance through append-only ledger entries
-
-这是一个简单的投注系统，允许用户：
-- 充值资金
-- 下注
-- 结算投注（赢/输/作废）
-- 查看投注历史
-- 通过仅追加的账本条目跟踪余额
-
-## 🛠 Tech Stack | 技术栈
-
-- **Frontend**: Next.js 14 (pages directory), React, TypeScript, Tailwind CSS
+- **Frontend**: Next.js 14 (Pages Directory), React 19, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes (Node.js)
-- **Database**: SQLite with Prisma ORM
-- **Container**: Docker + Docker Compose
+- **Database**: SQLite with Prisma ORM 5.x
+- **Deployment**: Docker + Docker Compose
+- **Styling**: Tailwind CSS with responsive design
 
-## 💾 Data Models | 数据模型
+## 💾 Data Models
 
-### 1. User (用户)
+### User
 ```prisma
 model User {
   id           String        @id @default(uuid())
@@ -102,23 +86,24 @@ model User {
 }
 ```
 
-### 2. LedgerEntry (账本条目 - 仅追加)
+### LedgerEntry (Append-Only)
 ```prisma
 model LedgerEntry {
   id        String   @id @default(uuid())
   userId    String
   type      String   // DEPOSIT | BET_DEBIT | BET_CREDIT
-  amount    Int      // Amount in smallest unit (e.g., cents)
+  amount    Int      // Amount in smallest unit
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 ```
 
-**Balance Formula | 余额计算公式:**
+**Balance Formula:**
 ```
 balance = sum(DEPOSIT) + sum(BET_CREDIT) - sum(BET_DEBIT)
 ```
 
-### 3. Bet (投注)
+### Bet
 ```prisma
 model Bet {
   id            String    @id @default(uuid())
@@ -129,15 +114,14 @@ model Bet {
   payoutAmount  Int       @default(0)
   createdAt     DateTime  @default(now())
   settledAt     DateTime?
+  user          User      @relation(fields: [userId], references: [id])
 }
 ```
 
-## 🔌 API Endpoints | API 接口
+## 🔌 API Endpoints
 
 ### GET `/api/users`
-Get all users with their balances.
-
-获取所有用户及其余额。
+Get all users with calculated balances.
 
 **Response:**
 ```json
@@ -152,9 +136,7 @@ Get all users with their balances.
 ```
 
 ### POST `/api/deposit`
-Admin deposits balance for a user.
-
-管理员为用户充值。
+Admin deposits funds for a user.
 
 **Request:**
 ```json
@@ -173,9 +155,7 @@ Admin deposits balance for a user.
 ```
 
 ### POST `/api/bet/place`
-Place a bet.
-
-下注。
+Place a new bet.
 
 **Request:**
 ```json
@@ -185,6 +165,12 @@ Place a bet.
 }
 ```
 
+**Validations:**
+- Amount must be positive
+- Amount cannot exceed current balance
+- Creates BET_DEBIT ledger entry
+- Creates Bet with PLACED status
+
 **Response:**
 ```json
 {
@@ -193,24 +179,21 @@ Place a bet.
 }
 ```
 
-**Validations:**
-- Amount must be > 0
-- Amount must not exceed current balance
-- Creates BET_DEBIT ledger entry
-- Creates Bet with status PLACED
-
 ### POST `/api/bet/settle`
-Settle a bet.
-
-结算投注。
+Settle an existing bet.
 
 **Request:**
 ```json
 {
   "betId": "uuid",
-  "result": "WIN" // or "LOSE" or "VOID"
+  "result": "WIN"  // WIN | LOSE | VOID
 }
 ```
+
+**Settlement Rules:**
+- **WIN**: payout = amount × 2 (creates BET_CREDIT)
+- **LOSE**: payout = 0 (no ledger entry)
+- **VOID**: payout = amount (creates BET_CREDIT as refund)
 
 **Response:**
 ```json
@@ -220,18 +203,8 @@ Settle a bet.
 }
 ```
 
-**Settlement Rules:**
-- WIN: payout = amount × 2
-- LOSE: payout = 0
-- VOID: payout = amount (refund)
-- Creates BET_CREDIT ledger entry for payouts
-- Updates bet status to SETTLED
-- Prevents double settlement
-
 ### GET `/api/bet/history?userId={uuid}`
-Get bet history for a user.
-
-获取用户的投注历史。
+Get bet history for a specific user.
 
 **Response:**
 ```json
@@ -249,272 +222,302 @@ Get bet history for a user.
 ]
 ```
 
-## ⚡ Features | 功能特性
+## ✨ Features
 
-### Core Features
-- ✅ User management with balance tracking
-- ✅ Deposit functionality
-- ✅ Place bets with balance validation
-- ✅ Settle bets (WIN/LOSE/VOID)
-- ✅ View bet history
-- ✅ Append-only ledger system
+### Core Functionality
+- **Balance Tracking**: Real-time balance calculation from ledger entries
+- **Deposit Management**: Admin can add funds with validation
+- **Bet Placement**: Amount validation against current balance
+- **Bet Settlement**: WIN/LOSE/VOID with automatic payout calculation
+- **History Tracking**: Complete audit trail of all transactions
 
-### Safeguards
-- ✅ Balance computed from ledger entries
-- ✅ Prevents negative balances
-- ✅ Prevents double settlement
-- ✅ Ledger entries are append-only (no updates/deletes)
-- ✅ Transaction support for data consistency
+### Data Integrity
+- **Append-Only Ledger**: No updates or deletes, only inserts
+- **Transaction Support**: Atomic operations for consistency
+- **Balance Validation**: Prevents negative balances
+- **Double Settlement Prevention**: Bets can only be settled once
+- **Type Safety**: Full TypeScript implementation
 
-## 🚀 Local Development | 本地开发
+## 📱 Usage Guide
 
-### Prerequisites | 前置要求
+### Admin Functions
+1. **View Users**: Access home page to see all users and balances
+2. **Deposit Funds**:
+   - Click "Deposit" on any user
+   - Enter amount
+   - Confirm deposit
+   - Balance updates immediately
 
-- **Node.js 20.9.0 或更高版本** | **Node.js 20.9.0 or higher** ⚠️
-  - 检查版本 | Check version: `node -v`
-  - 下载 | Download: https://nodejs.org/
-- npm 10+ 或 yarn | npm 10+ or yarn
+### User Functions
+1. **Place Bet**:
+   - Click "Play Game" for a user
+   - Enter bet amount
+   - Submit bet (balance decreases)
+2. **View History**: See all past bets with outcomes
+3. **Track Balance**: Real-time balance updates
 
-### 🎯 一键验证脚本 | One-Click Verification Script
+### Settlement (Admin)
+1. Navigate to user's game page
+2. Find placed bet in history
+3. Click WIN/LOSE/VOID
+4. Balance updates based on outcome
 
-**最简单的方式！自动检查并设置所有内容：**  
-**Easiest way! Automatically checks and sets up everything:**
+## 🧪 Testing
 
-```bash
-# Linux/Mac
-./verify-setup.sh
+### Automated Setup Script
 
-# Windows
+**Windows:**
+```cmd
 verify-setup.bat
 ```
 
-这个脚本会自动：
-- 检查 Node.js 和 npm
-- 安装依赖
-- 设置数据库
-- 生成 Prisma 客户端
-- 填充种子数据
-
-This script automatically:
-- Checks Node.js and npm
-- Installs dependencies
-- Sets up database
-- Generates Prisma client
-- Seeds test data
-
-### Installation Steps
-
-1. **Clone the repository | 克隆仓库**
+**Mac/Linux:**
 ```bash
-git clone https://github.com/xiaocao-xixi/betting-system.git
-cd betting-system
+./verify-setup.sh
 ```
 
-2. **Install dependencies | 安装依赖**
+This script automatically:
+- Checks Node.js version
+- Installs dependencies
+- Creates .env file
+- Runs migrations
+- Generates Prisma client
+- Seeds database
+- Validates build
+
+### Manual Testing Flow
+1. View user list (confirm 10 users with 1000 balance)
+2. Deposit 500 to user (balance → 1500)
+3. Place bet of 100 (balance → 1400)
+4. Settle as WIN (balance → 1600, payout 200)
+5. Verify bet history shows all transactions
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### Error: 'next' is not recognized
+**Cause**: Dependencies not installed
+
+**Solution**:
 ```bash
 npm install
 ```
 
-3. **Set up database | 配置数据库**
-```bash
-# Run migrations
-npm run prisma:migrate
+#### Error: Environment variable not found: DATABASE_URL
+**Cause**: Missing .env file
 
-# Generate Prisma client
-npm run prisma:generate
+**Solution**:
+```bash
+# Create .env file
+cp .env.example .env
+
+# Or manually create with:
+echo 'DATABASE_URL="file:./dev.db"' > .env
 ```
 
-4. **Seed the database | 填充种子数据**
+#### Error: Node version too old
+**Cause**: Node.js < 20.9.0
+
+**Solution**:
+1. Download from [nodejs.org](https://nodejs.org/)
+2. Install LTS version (20.x)
+3. Restart terminal
+4. Verify: `node -v`
+
+#### Error: users.map is not a function
+**Cause**: Database not initialized
+
+**Solution**:
 ```bash
+npx prisma migrate dev --name init
+npx prisma generate
 npm run prisma:seed
 ```
 
-This creates 10 test users, each with an initial balance of 1000 units.
+#### Port 3000 already in use
+**Solutions**:
 
-这将创建 10 个测试用户，每个用户初始余额为 1000 单位。
-
-5. **Start development server | 启动开发服务器**
+Option 1 - Use different port:
 ```bash
-npm run dev
+# Windows
+set PORT=3001 && npm run dev
+
+# Mac/Linux
+PORT=3001 npm run dev
 ```
 
-6. **Open browser | 打开浏览器**
-```
-http://localhost:3000
-```
-
-## 🐳 Docker Setup | Docker 部署
-
-### Prerequisites
-- Docker
-- Docker Compose
-
-### Steps
-
-1. **Build and start containers | 构建并启动容器**
+Option 2 - Kill existing process:
 ```bash
-docker-compose up --build
+# Windows
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+
+# Mac/Linux
+lsof -ti:3000 | xargs kill -9
 ```
 
-2. **Access the application | 访问应用**
-```
-http://localhost:3000
-```
+### Database Issues
 
-### Docker Commands
-
+#### Reset database:
 ```bash
-# Start containers
-docker-compose up
-
-# Start in detached mode
-docker-compose up -d
-
-# Stop containers
-docker-compose down
-
-# View logs
-docker-compose logs -f
-
-# Rebuild containers
-docker-compose up --build
+rm dev.db
+rm -rf prisma/migrations
+npx prisma migrate dev --name init
+npm run prisma:seed
 ```
 
-### Running Migrations in Docker
-
+#### View database:
 ```bash
-# Execute migrations
-docker-compose exec app npx prisma migrate deploy
-
-# Seed database
-docker-compose exec app npx prisma db seed
+npx prisma studio
 ```
 
-## 📘 Usage Guide | 使用指南
+#### Check migration status:
+```bash
+npx prisma migrate status
+```
 
-### Demo Flow
+## 🔧 Development
 
-1. **View Users | 查看用户**
-   - Open the home page
-   - See all 10 seeded users with their balances
-
-2. **Deposit Funds | 充值**
-   - Click "Deposit" button for any user
-   - Enter amount (e.g., 500)
-   - Confirm deposit
-   - Balance updates automatically
-
-3. **Play Game | 进入游戏**
-   - Click "Play Game" for any user
-   - View user details and current balance
-
-4. **Place Bet | 下注**
-   - Enter bet amount (must be ≤ balance)
-   - Click "Place Bet"
-   - Bet appears in history with PLACED status
-
-5. **Settle Bet | 结算投注**
-   - For any PLACED bet, click WIN/LOSE/VOID
-   - WIN: Receive 2× bet amount
-   - LOSE: Lose bet amount
-   - VOID: Get refund
-   - Balance updates automatically
-
-6. **View History | 查看历史**
-   - All bets shown in chronological order
-   - See status, result, and payout for each bet
-
-## 📊 Requirements Mapping | 需求映射
-
-| Requirement | Implementation | Location |
-|------------|----------------|----------|
-| Next.js with pages directory | ✅ | `/pages` |
-| TypeScript | ✅ | `tsconfig.json`, all `.ts` files |
-| API Routes | ✅ | `/pages/api` |
-| SQLite + Prisma | ✅ | `prisma/schema.prisma` |
-| User model | ✅ | `prisma/schema.prisma` |
-| LedgerEntry model | ✅ | `prisma/schema.prisma` |
-| Bet model | ✅ | `prisma/schema.prisma` |
-| Seed 10 users | ✅ | `prisma/seed.ts` |
-| Deposit API | ✅ | `/pages/api/deposit.ts` |
-| Place bet API | ✅ | `/pages/api/bet/place.ts` |
-| Settle bet API | ✅ | `/pages/api/bet/settle.ts` |
-| Bet history API | ✅ | `/pages/api/bet/history.ts` |
-| User list page | ✅ | `/pages/index.tsx` |
-| Game page | ✅ | `/pages/game/[userId].tsx` |
-| Balance validation | ✅ | `/pages/api/bet/place.ts` |
-| Double settlement prevention | ✅ | `/pages/api/bet/settle.ts` |
-| Append-only ledger | ✅ | Enforced by API logic |
-| Docker setup | ✅ | `Dockerfile`, `docker-compose.yml` |
-| Chinese + English comments | ✅ | All source files |
-
-## 📝 Project Structure | 项目结构
-
+### Project Structure
 ```
 betting-system/
 ├── pages/              # Next.js pages
-│   ├── api/           # API routes
-│   │   ├── users.ts
-│   │   ├── deposit.ts
-│   │   └── bet/
-│   │       ├── place.ts
-│   │       ├── settle.ts
-│   │       └── history.ts
-│   ├── game/
+│   ├── index.tsx      # User list (home)
+│   ├── game/          # Game pages
 │   │   └── [userId].tsx
-│   ├── index.tsx      # User list page
-│   └── _app.tsx
-├── lib/               # Shared utilities
-│   ├── prisma.ts     # Prisma client
-│   └── types.ts      # TypeScript types
-├── prisma/           # Database
-│   ├── schema.prisma # Data models
-│   ├── seed.ts       # Seed script
-│   └── migrations/   # Database migrations
-├── styles/           # CSS files
-│   └── globals.css
-├── Dockerfile        # Docker configuration
-├── docker-compose.yml
-├── package.json
-└── README.md
+│   └── api/           # API routes
+│       ├── users.ts
+│       ├── deposit.ts
+│       └── bet/
+├── prisma/            # Database schema & migrations
+│   ├── schema.prisma
+│   └── seed.ts
+├── lib/               # Utilities
+│   ├── prisma.ts
+│   └── types.ts
+├── styles/            # Global styles
+└── public/            # Static assets
 ```
 
-## 🔐 Security Notes | 安全说明
+### Available Scripts
 
-- This is a demo application without authentication
-- In production, add proper authentication and authorization
-- Validate all inputs on both client and server
-- Use environment variables for sensitive configuration
-- Implement rate limiting for API endpoints
-
-这是一个没有身份验证的演示应用程序。
-在生产环境中，应添加适当的身份验证和授权机制。
-
-## 🔧 Troubleshooting | 故障排除
-
-### 常见错误 | Common Errors
-
-**❌ 错误: 'next' 不是内部或外部命令**
-
-这是最常见的错误！说明您还没有安装依赖。
-
-**解决方案：**
 ```bash
-npm install
+npm run dev          # Start development server
+npm run build        # Build for production
+npm start            # Start production server
+npm run lint         # Run ESLint
+npm run prisma:seed  # Seed database
 ```
 
-**详细的故障排除指南，请查看：**  
-**For detailed troubleshooting guide, see:**
+### Adding New Features
 
-👉 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+1. **New API Endpoint**:
+   - Create file in `pages/api/`
+   - Import Prisma client from `@/lib/prisma`
+   - Implement handler with proper validation
 
-包含以下内容 | Includes:
-- ✅ 所有常见错误的解决方案
-- ✅ 完整重置流程
-- ✅ 数据库问题处理
-- ✅ 端口占用问题
-- ✅ Windows/Mac/Linux 特定问题
+2. **New Page**:
+   - Create file in `pages/`
+   - Use TypeScript for type safety
+   - Import types from `@/lib/types`
+
+3. **Database Changes**:
+   - Update `prisma/schema.prisma`
+   - Run `npx prisma migrate dev`
+   - Update seed script if needed
+
+## 🚢 Deployment
+
+### Production Build
+
+```bash
+# Build
+npm run build
+
+# Start
+npm start
+```
+
+### Environment Variables
+
+Create `.env.production`:
+```env
+DATABASE_URL="file:./prod.db"
+NODE_ENV="production"
+```
+
+### Docker Production
+
+```bash
+# Build production image
+docker build -t betting-system:prod .
+
+# Run
+docker run -p 3000:3000 betting-system:prod
+```
+
+## 📋 Requirements Mapping
+
+All original requirements have been implemented:
+
+✅ **Tech Stack**
+- Next.js with Pages Directory
+- TypeScript throughout
+- SQLite with Prisma ORM
+- Docker configuration
+
+✅ **Data Models**
+- User with uuid id
+- LedgerEntry (append-only)
+- Bet with status tracking
+- Balance calculated from ledger
+
+✅ **Core Features**
+- Seed 10 users
+- Deposit functionality
+- Place bet with validation
+- Settle bet (WIN/LOSE/VOID)
+- Bet history
+
+✅ **Pages**
+- User list with balances
+- Game page with betting interface
+- Deposit modal
+- Bet history display
+
+✅ **Safeguards**
+- Balance validation
+- Prevent negative balances
+- Prevent double settlement
+- Append-only ledger
+- Transaction support
+
+✅ **Documentation**
+- Comprehensive README
+- API documentation
+- Setup instructions
+- Troubleshooting guide
 
 ## 📄 License
 
 MIT
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch
+3. Make changes with tests
+4. Submit pull request
+
+## 📧 Support
+
+For issues or questions:
+1. Check Troubleshooting section above
+2. Review API documentation
+3. Check Prisma logs: `npx prisma studio`
+4. Open GitHub issue
+
+---
+
+**Note**: This is a demo betting system for educational purposes. The default configuration uses SQLite for simplicity. For production use, consider PostgreSQL or MySQL with proper authentication and authorization.
