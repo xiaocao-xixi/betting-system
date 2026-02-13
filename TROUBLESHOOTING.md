@@ -180,7 +180,73 @@ lsof -ti:3000 | xargs kill -9
 
 ---
 
-### ❌ 错误 4: Prisma Client 未生成
+### ❌ 错误 4: Environment variable not found: DATABASE_URL
+
+**错误信息：**
+```
+Error: Prisma schema validation - (get-config wasm)
+Error code: P1012
+error: Environment variable not found: DATABASE_URL.
+```
+
+**原因 | Cause:**
+`.env` 文件不存在或没有定义 `DATABASE_URL`。
+
+The `.env` file doesn't exist or doesn't define `DATABASE_URL`.
+
+**解决方案 | Solution:**
+
+**方法 1: 检查 .env 文件 | Check .env file**
+
+```bash
+# 检查文件是否存在 | Check if file exists
+# Windows
+dir .env
+
+# Mac/Linux
+ls -la .env
+```
+
+如果文件不存在，创建它：
+If file doesn't exist, create it:
+
+```bash
+# Windows
+copy .env.example .env
+
+# Mac/Linux
+cp .env.example .env
+```
+
+**方法 2: 手动创建 .env 文件 | Manually create .env file**
+
+在项目根目录创建 `.env` 文件，内容如下：
+Create `.env` file in project root with this content:
+
+```
+DATABASE_URL="file:./dev.db"
+NODE_ENV="development"
+```
+
+**方法 3: 直接指定环境变量 | Specify environment variable directly**
+
+```bash
+# Windows
+set DATABASE_URL=file:./dev.db && npx prisma migrate dev
+
+# Mac/Linux
+DATABASE_URL="file:./dev.db" npx prisma migrate dev
+```
+
+**验证 | Verify:**
+```bash
+# 再次尝试迁移 | Try migration again
+npx prisma migrate dev --name init
+```
+
+---
+
+### ❌ 错误 5: Prisma Client 未生成
 
 **错误信息：**
 ```
@@ -196,7 +262,7 @@ npx prisma generate
 
 ---
 
-### ❌ 错误 5: TypeScript 编译错误
+### ❌ 错误 6: TypeScript 编译错误
 
 **错误信息：**
 ```
