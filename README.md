@@ -4,6 +4,14 @@ A full-stack betting system built with Next.js, Prisma, SQLite, and Docker.
 
 一个使用 Next.js、Prisma、SQLite 和 Docker 构建的全栈投注系统。
 
+## ✅ 系统已就绪 | System Ready
+
+**系统已完成开发，可以立即部署测试！**  
+**The system is fully developed and ready for deployment!**
+
+👉 **快速开始 | Quick Start:** 查看 [本地开发](#local-development--本地开发) 或 [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)  
+👉 **Quick Start:** See [Local Development](#local-development--本地开发) or [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)
+
 ## 📋 Table of Contents | 目录
 
 - [Overview](#overview--项目概述)
@@ -222,6 +230,33 @@ Get bet history for a user.
 ### Prerequisites
 - Node.js 18+
 - npm or yarn
+
+### 🎯 一键验证脚本 | One-Click Verification Script
+
+**最简单的方式！自动检查并设置所有内容：**  
+**Easiest way! Automatically checks and sets up everything:**
+
+```bash
+# Linux/Mac
+./verify-setup.sh
+
+# Windows
+verify-setup.bat
+```
+
+这个脚本会自动：
+- 检查 Node.js 和 npm
+- 安装依赖
+- 设置数据库
+- 生成 Prisma 客户端
+- 填充种子数据
+
+This script automatically:
+- Checks Node.js and npm
+- Installs dependencies
+- Sets up database
+- Generates Prisma client
+- Seeds test data
 
 ### Installation Steps
 
