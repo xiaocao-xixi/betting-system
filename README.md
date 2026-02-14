@@ -311,6 +311,69 @@ This script automatically:
 
 ## 🐛 Troubleshooting
 
+### Git Clone Issues | Git 克隆问题
+
+#### Error: Failed to connect to github.com port 443: Timed out
+#### 错误：无法连接到 github.com 的 443 端口：超时
+
+**Cause**: Network connectivity issues, firewall restrictions, or proxy settings blocking GitHub access.
+
+**原因**：网络连接问题、防火墙限制或代理设置阻止访问 GitHub。
+
+**Solutions | 解决方案**:
+
+**Option 1 - Use SSH instead of HTTPS | 选项 1 - 使用 SSH 而非 HTTPS**:
+```bash
+# Clone using SSH (requires SSH key setup)
+git clone git@github.com:xiaocao-xixi/betting-system.git
+```
+
+**Option 2 - Configure Git to use a proxy | 选项 2 - 配置 Git 使用代理**:
+```bash
+# HTTP proxy
+git config --global http.proxy http://proxy.example.com:8080
+git config --global https.proxy https://proxy.example.com:8080
+
+# SOCKS5 proxy
+git config --global http.proxy socks5://127.0.0.1:1080
+git config --global https.proxy socks5://127.0.0.1:1080
+
+# Unset proxy (if needed)
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
+
+**Option 3 - Download as ZIP | 选项 3 - 下载 ZIP 文件**:
+1. Visit: https://github.com/xiaocao-xixi/betting-system
+2. Click "Code" → "Download ZIP"
+3. Extract and use normally
+4. Note: This won't include git history
+
+**Option 4 - Use GitHub mirror (for China users) | 选项 4 - 使用 GitHub 镜像（中国用户）**:
+```bash
+# Try alternative mirror sites
+git clone https://gitclone.com/github.com/xiaocao-xixi/betting-system.git
+# Or
+git clone https://hub.fastgit.xyz/xiaocao-xixi/betting-system.git
+```
+
+**Option 5 - Increase Git timeout | 选项 5 - 增加 Git 超时时间**:
+```bash
+git config --global http.lowSpeedLimit 0
+git config --global http.lowSpeedTime 999999
+git config --global http.postBuffer 524288000
+```
+
+**Option 6 - Check firewall/antivirus | 选项 6 - 检查防火墙/杀毒软件**:
+- Temporarily disable firewall or antivirus
+- Add exception for Git/GitHub
+- Check corporate network restrictions
+
+**Option 7 - Try different network | 选项 7 - 尝试不同网络**:
+- Switch from WiFi to mobile hotspot
+- Try from a different location
+- Use VPN if GitHub is blocked
+
 ### Common Issues
 
 #### Error: 'next' is not recognized

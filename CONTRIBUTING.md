@@ -100,6 +100,10 @@ npm run prisma:seed
 npm run dev
 ```
 
+**Note**: If you encounter connection issues when cloning (timeout, connection refused, etc.), please see the [Git Clone Troubleshooting section in the README](README.md#git-clone-issues--git-克隆问题) for solutions.
+
+**注意**：如果克隆时遇到连接问题（超时、连接被拒绝等），请参阅 [README 中的 Git 克隆故障排除部分](README.md#git-clone-issues--git-克隆问题)寻找解决方案。
+
 ## Questions? | 有问题？
 
 Feel free to open an issue for questions or discussions!
