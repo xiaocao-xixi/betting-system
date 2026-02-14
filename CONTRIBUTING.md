@@ -91,6 +91,10 @@ cd betting-system
 # Install dependencies
 npm install
 
+# Create .env file (copy from example)
+cp .env.example .env  # Linux/Mac
+# or: copy .env.example .env  # Windows
+
 # Setup database
 npx prisma migrate dev --name init
 npx prisma generate

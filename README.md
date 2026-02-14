@@ -37,16 +37,22 @@ cd betting-system
 # 2. Install dependencies (REQUIRED!)
 npm install
 
-# 3. Setup database
+# 3. Create .env file (REQUIRED!)
+# Windows:
+copy .env.example .env
+# Linux/Mac:
+cp .env.example .env
+
+# 4. Setup database
 npx prisma migrate dev --name init
 
-# 4. Generate Prisma client
+# 5. Generate Prisma client
 npx prisma generate
 
-# 5. Seed test data (10 users with 1000 initial balance each)
+# 6. Seed test data (10 users with 1000 initial balance each)
 npm run prisma:seed
 
-# 6. Start development server
+# 7. Start development server
 npm run dev
 ```
 
