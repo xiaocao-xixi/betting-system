@@ -25,17 +25,6 @@ export function formatDate(date: Date | string): string {
 }
 
 /**
- * Extract user avatar from display name
- * Returns the first letter in uppercase
- */
-export function getUserAvatar(displayName: string): string {
-  if (!displayName) {
-    return '?'
-  }
-  return displayName.charAt(0).toUpperCase()
-}
-
-/**
  * Validate positive integer
  */
 export function isPositiveInteger(value: string | number): boolean {

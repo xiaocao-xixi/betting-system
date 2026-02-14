@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import type { UserWithBalance } from '@/lib/types'
 import type { Bet } from '@prisma/client'
-import { formatCurrency, formatDate, getUserAvatar, isPositiveInteger, getErrorMessage } from '@/lib/utils'
+import { formatCurrency, formatDate, isPositiveInteger, getErrorMessage } from '@/lib/utils'
 import { BETTING_CONFIG, BET_RESULT_COLORS, UI_CONFIG } from '@/lib/constants'
 
 type BetResult = 'WIN' | 'LOSE' | 'VOID'
@@ -206,14 +206,9 @@ export default function GamePage() {
         {/* Header with User Info */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-white font-bold text-2xl mr-4">
-                {getUserAvatar(user.displayName)}
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800">{user.displayName}</h1>
-                <p className="text-gray-600">{user.email}</p>
-              </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-800">{user.displayName}</h1>
+              <p className="text-gray-600">{user.email}</p>
             </div>
             <div className="text-right">
               <p className="text-sm text-gray-600 mb-1">Balance</p>

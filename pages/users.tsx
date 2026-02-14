@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import type { UserWithBalance } from '@/lib/types'
-import { formatCurrency, getUserAvatar, isPositiveInteger, getErrorMessage } from '@/lib/utils'
+import { formatCurrency, isPositiveInteger, getErrorMessage } from '@/lib/utils'
 import { BETTING_CONFIG } from '@/lib/constants'
 
 export default function UsersPage() {
@@ -176,12 +176,7 @@ export default function UsersPage() {
                   {users.map((user) => (
                     <tr key={user.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-white font-bold text-lg mr-3">
-                            {getUserAvatar(user.displayName)}
-                          </div>
-                          <span className="font-medium text-gray-800">{user.displayName}</span>
-                        </div>
+                        <span className="font-medium text-gray-800">{user.displayName}</span>
                       </td>
                       <td className="px-6 py-4 text-gray-600">{user.email}</td>
                       <td className="px-6 py-4">
