@@ -446,7 +446,31 @@ npm run prisma:seed  # Seed database
 
 ## 🚢 Deployment
 
-### Production Build
+### Vercel Deployment (推荐 Recommended)
+
+本项目已配置支持 Vercel 一键部署。详细步骤请查看：
+This project is configured for one-click Vercel deployment. See detailed instructions:
+
+**📖 [Vercel 部署指南 | Vercel Deployment Guide](./VERCEL_DEPLOYMENT.md)**
+
+快速部署步骤 | Quick Steps:
+1. Fork 本仓库 | Fork this repository
+2. 在 Vercel 导入项目 | Import project in Vercel
+3. 添加 Vercel Postgres 数据库 | Add Vercel Postgres database
+4. 更新 `prisma/schema.prisma` 使用 PostgreSQL | Update schema to use PostgreSQL
+5. 部署并运行迁移 | Deploy and run migrations
+
+### Docker Production
+
+```bash
+# Build production image
+docker build -t betting-system:prod .
+
+# Run
+docker run -p 3000:3000 betting-system:prod
+```
+
+### Production Build (Local)
 
 ```bash
 # Build
@@ -462,16 +486,6 @@ Create `.env.production`:
 ```env
 DATABASE_URL="file:./prod.db"
 NODE_ENV="production"
-```
-
-### Docker Production
-
-```bash
-# Build production image
-docker build -t betting-system:prod .
-
-# Run
-docker run -p 3000:3000 betting-system:prod
 ```
 
 ## 📋 Requirements Mapping
