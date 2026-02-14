@@ -37,16 +37,22 @@ cd betting-system
 # 2. Install dependencies (REQUIRED!)
 npm install
 
-# 3. Setup database
+# 3. Create .env file (REQUIRED!)
+# Windows:
+copy .env.example .env
+# Linux/Mac:
+cp .env.example .env
+
+# 4. Setup database
 npx prisma migrate dev --name init
 
-# 4. Generate Prisma client
+# 5. Generate Prisma client
 npx prisma generate
 
-# 5. Seed test data (10 users with 1000 initial balance each)
+# 6. Seed test data (10 users with 1000 initial balance each)
 npm run prisma:seed
 
-# 6. Start development server
+# 7. Start development server
 npm run dev
 ```
 
@@ -310,6 +316,73 @@ This script automatically:
 5. Verify bet history shows all transactions
 
 ## 🐛 Troubleshooting
+
+### Git Clone Issues | Git 克隆问题
+
+#### Error: Failed to connect to github.com port 443: Timed out
+#### 错误：无法连接到 github.com 的 443 端口：超时
+
+**Cause**: Network connectivity issues, firewall restrictions, or proxy settings blocking GitHub access.
+
+**原因**：网络连接问题、防火墙限制或代理设置阻止访问 GitHub。
+
+**Solutions | 解决方案**:
+
+**Option 1 - Use SSH instead of HTTPS | 选项 1 - 使用 SSH 而非 HTTPS**:
+```bash
+# Clone using SSH (requires SSH key setup)
+git clone git@github.com:xiaocao-xixi/betting-system.git
+```
+
+**Option 2 - Configure Git to use a proxy | 选项 2 - 配置 Git 使用代理**:
+```bash
+# HTTP proxy
+git config --global http.proxy http://proxy.example.com:8080
+git config --global https.proxy https://proxy.example.com:8080
+
+# SOCKS5 proxy
+git config --global http.proxy socks5://127.0.0.1:1080
+git config --global https.proxy socks5://127.0.0.1:1080
+
+# Unset proxy (if needed)
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
+
+**Option 3 - Download as ZIP | 选项 3 - 下载 ZIP 文件**:
+1. Visit: https://github.com/xiaocao-xixi/betting-system
+2. Click "Code" → "Download ZIP"
+3. Extract and use normally
+4. Note: This won't include git history
+
+**Option 4 - Use GitHub mirror (for China users) | 选项 4 - 使用 GitHub 镜像（中国用户）**:
+```bash
+# Try alternative mirror sites (note: third-party services, availability may vary)
+git clone https://gitclone.com/github.com/xiaocao-xixi/betting-system.git
+# Or
+git clone https://hub.fastgit.xyz/xiaocao-xixi/betting-system.git
+```
+**Note**: These are third-party mirror services and their availability may change over time. Please verify they are still active before use.
+
+**注意**：这些是第三方镜像服务，可用性可能会随时间变化。使用前请验证它们是否仍然有效。
+
+**Option 5 - Increase Git timeout | 选项 5 - 增加 Git 超时时间**:
+```bash
+# Increase timeout for slow connections
+git config --global http.lowSpeedLimit 1000  # Minimum speed in bytes/sec
+git config --global http.lowSpeedTime 300    # Abort if speed stays below limit for 300 sec (5 min)
+git config --global http.postBuffer 524288000  # 500MB buffer for large repos
+```
+
+**Option 6 - Check firewall/antivirus | 选项 6 - 检查防火墙/杀毒软件**:
+- Temporarily disable firewall or antivirus
+- Add exception for Git/GitHub
+- Check corporate network restrictions
+
+**Option 7 - Try different network | 选项 7 - 尝试不同网络**:
+- Switch from WiFi to mobile hotspot
+- Try from a different location
+- Use VPN if GitHub is blocked
 
 ### Common Issues
 
