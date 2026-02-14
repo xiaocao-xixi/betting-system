@@ -9,7 +9,7 @@ async function main() {
     const user = await prisma.user.create({
       data: {
         email: `user${i}@example.com`,
-        displayName: `User ${i}`,
+        displayName: `user${i}`,
       },
     })
     users.push(user)

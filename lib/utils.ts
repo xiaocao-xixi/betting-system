@@ -26,11 +26,10 @@ export function formatDate(date: Date | string): string {
 
 /**
  * Extract user avatar from display name
- * Tries to extract number, falls back to first letter
+ * Returns the first letter in uppercase
  */
 export function getUserAvatar(displayName: string): string {
-  const numberMatch = displayName.match(/\d+/)
-  return numberMatch ? numberMatch[0] : displayName.charAt(0).toUpperCase()
+  return displayName.charAt(0).toUpperCase()
 }
 
 /**
