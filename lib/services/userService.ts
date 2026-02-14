@@ -33,7 +33,7 @@ export async function calculateUserBalance(userId: string): Promise<number> {
  */
 export async function getAllUsersWithBalances(): Promise<UserWithBalance[]> {
   const users = await prisma.user.findMany({
-    orderBy: { email: 'asc' },
+    orderBy: { createdAt: 'asc' },
   })
 
   const usersWithBalances = await Promise.all(
