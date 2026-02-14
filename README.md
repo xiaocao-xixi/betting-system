@@ -37,16 +37,22 @@ cd betting-system
 # 2. Install dependencies (REQUIRED!)
 npm install
 
-# 3. Setup database
+# 3. Create .env file (REQUIRED!)
+# Copy the example file or create manually
+cp .env.example .env
+# Or on Windows: copy .env.example .env
+# The .env file must contain: DATABASE_URL="file:./dev.db"
+
+# 4. Setup database
 npx prisma migrate dev --name init
 
-# 4. Generate Prisma client
+# 5. Generate Prisma client
 npx prisma generate
 
-# 5. Seed test data (10 users with 1000 initial balance each)
+# 6. Seed test data (10 users with 1000 initial balance each)
 npm run prisma:seed
 
-# 6. Start development server
+# 7. Start development server
 npm run dev
 ```
 
@@ -326,12 +332,17 @@ npm install
 
 **Solution**:
 ```bash
-# Create .env file
+# Linux/Mac - Create .env file
 cp .env.example .env
 
-# Or manually create with:
-echo 'DATABASE_URL="file:./dev.db"' > .env
+# Windows - Create .env file
+copy .env.example .env
+
+# Or manually create .env file with this content:
+# DATABASE_URL="file:./dev.db"
 ```
+
+**Note**: You MUST create the .env file before running any Prisma commands.
 
 #### Error: Node version too old
 **Cause**: Node.js < 20.9.0
