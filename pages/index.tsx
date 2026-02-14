@@ -1,3 +1,7 @@
+/**
+ * Home Page - Landing page that redirects to users dashboard
+ * 首页 - 重定向到用户管理页面的落地页
+ */
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
