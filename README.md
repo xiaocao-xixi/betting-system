@@ -519,6 +519,27 @@ npm run prisma:seed  # Seed database
 
 ## 🚢 Deployment
 
+### Vercel Deployment (Recommended for Quick Deploy)
+
+**For detailed Vercel deployment instructions, see [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md)**
+
+Quick configuration for Vercel:
+
+| Setting | Value |
+|---------|-------|
+| **Build Command** | `prisma generate && npm run build` |
+| **Output Directory** | `.next` (auto-detected) |
+| **Install Command** | `npm install` (default) |
+| **Environment Variables** | See below |
+
+**Required Environment Variables:**
+```env
+DATABASE_URL="postgresql://user:password@host:5432/database"
+NODE_ENV="production"
+```
+
+**⚠️ Important:** SQLite is not suitable for Vercel (serverless platform). You must use PostgreSQL, MySQL, or another cloud database. See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for detailed instructions on database setup and migration.
+
 ### Production Build
 
 ```bash
