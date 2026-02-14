@@ -33,7 +33,7 @@ If you find a bug or have a feature request, please create an issue on GitHub wi
    ```
 5. **Commit your changes** | 提交更改
    ```bash
-   git commit -m "Add: your feature description"
+   git commit
    ```
 6. **Push to your fork** | 推送到您的 fork
    ```bash
@@ -52,22 +52,6 @@ If you find a bug or have a feature request, please create an issue on GitHub wi
 - 遵循现有代码格式
 - 为复杂逻辑添加注释
 - 保持函数小而专注
-
-### Commit Messages | 提交信息
-
-Use clear, descriptive commit messages:
-- `Add: new feature`
-- `Fix: bug description`
-- `Update: changes to existing feature`
-- `Refactor: code improvements`
-- `Docs: documentation updates`
-
-使用清晰、描述性的提交信息：
-- `Add: 新功能`
-- `Fix: 错误描述`
-- `Update: 现有功能的更改`
-- `Refactor: 代码改进`
-- `Docs: 文档更新`
 
 ### Testing | 测试
 
