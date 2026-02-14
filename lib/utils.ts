@@ -29,6 +29,9 @@ export function formatDate(date: Date | string): string {
  * Returns the first letter in uppercase
  */
 export function getUserAvatar(displayName: string): string {
+  if (!displayName) {
+    return '?'
+  }
   return displayName.charAt(0).toUpperCase()
 }
 
