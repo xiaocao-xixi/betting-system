@@ -1,0 +1,58 @@
+{
+  "name": "betting-system",
+  "version": "1.0.0",
+  "description": "A simple betting system built with Next.js, TypeScript, Prisma, and SQLite",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.9.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "tsx prisma/seed.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaocao-xixi/betting-system.git"
+  },
+  "keywords": [
+    "betting",
+    "nextjs",
+    "typescript",
+    "prisma",
+    "sqlite",
+    "ledger",
+    "demo"
+  ],
+  "author": "xiaocao-xixi",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/xiaocao-xixi/betting-system/issues"
+  },
+  "homepage": "https://github.com/xiaocao-xixi/betting-system#readme",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@types/node": "^25.2.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "next": "^16.1.6",
+    "prisma": "^5.22.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "autoprefixer": "^10.4.24",
+    "dotenv": "^17.3.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0"
+  }
+}

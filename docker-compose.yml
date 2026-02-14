@@ -1,0 +1,22 @@
+# Docker Compose 配置 | Docker Compose Configuration
+version: '3.8'
+
+services:
+  # Next.js 应用服务 | Next.js Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      # 挂载数据库文件以持久化数据 | Mount database file for data persistence
+      - ./dev.db:/app/dev.db
+      - ./prisma:/app/prisma
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:./dev.db
+    command: >
+      sh -c "npx prisma migrate deploy &&
+             npx prisma generate &&
+             npm start"

@@ -1,0 +1,57 @@
+// Prisma schema for betting system | 投注系统数据库模型
+// 使用 SQLite 数据库，适合本地开发和演示
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 用户模型 | User Model
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  displayName  String        @map("display_name")
+  ledgerEntries LedgerEntry[]
+  bets         Bet[]
+  createdAt    DateTime      @default(now()) @map("created_at")
+  
+  @@map("users")
+}
+
+// 账本条目模型（仅追加，不可更新或删除）| Ledger Entry Model (append-only)
+// 用于记录所有资金变动
+// type: DEPOSIT (存款) | BET_DEBIT (下注扣款) | BET_CREDIT (下注返还)
+model LedgerEntry {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
+  type      String   // DEPOSIT, BET_DEBIT, BET_CREDIT
+  amount    Int      // 使用最小单位（如分）| Amount in smallest unit (e.g., cents)
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  @@map("ledger_entries")
+  @@index([userId])
+}
+
+// 投注模型 | Bet Model
+// status: PLACED (已下注) | SETTLED (已结算)
+// result: WIN (赢) | LOSE (输) | VOID (作废)
+model Bet {
+  id            String    @id @default(uuid())
+  userId        String    @map("user_id")
+  user          User      @relation(fields: [userId], references: [id])
+  amount        Int       // 投注金额 | Bet amount
+  status        String    // PLACED, SETTLED
+  result        String?   // WIN, LOSE, VOID
+  payoutAmount  Int       @default(0) @map("payout_amount")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  settledAt     DateTime? @map("settled_at")
+  
+  @@map("bets")
+  @@index([userId])
+  @@index([status])
+}
