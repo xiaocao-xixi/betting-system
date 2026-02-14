@@ -44,13 +44,22 @@ export async function getAllUsersWithBalances(): Promise<UserWithBalance[]> {
   )
 
   // Sort by numeric value in displayName (e.g., user1, user2, ..., user10)
-  usersWithBalances.sort((a, b) => {
-    const numA = parseInt(a.displayName.match(/\d+/)?.[0] || '0')
-    const numB = parseInt(b.displayName.match(/\d+/)?.[0] || '0')
-    return numA - numB
+  // Extract numbers once for performance, then sort
+  const usersWithNumbers = usersWithBalances.map(user => {
+    const match = user.displayName.match(/\d+/)
+    const numericValue = match ? parseInt(match[0]) : Infinity
+    return { user, numericValue }
   })
 
-  return usersWithBalances
+  usersWithNumbers.sort((a, b) => {
+    if (a.numericValue !== b.numericValue) {
+      return a.numericValue - b.numericValue
+    }
+    // Secondary sort by full displayName for stable ordering
+    return a.user.displayName.localeCompare(b.user.displayName)
+  })
+
+  return usersWithNumbers.map(item => item.user)
 }
 
 /**
