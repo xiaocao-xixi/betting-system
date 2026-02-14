@@ -351,17 +351,21 @@ git config --global --unset https.proxy
 
 **Option 4 - Use GitHub mirror (for China users) | 选项 4 - 使用 GitHub 镜像（中国用户）**:
 ```bash
-# Try alternative mirror sites
+# Try alternative mirror sites (note: third-party services, availability may vary)
 git clone https://gitclone.com/github.com/xiaocao-xixi/betting-system.git
 # Or
 git clone https://hub.fastgit.xyz/xiaocao-xixi/betting-system.git
 ```
+**Note**: These are third-party mirror services and their availability may change over time. Please verify they are still active before use.
+
+**注意**：这些是第三方镜像服务，可用性可能会随时间变化。使用前请验证它们是否仍然有效。
 
 **Option 5 - Increase Git timeout | 选项 5 - 增加 Git 超时时间**:
 ```bash
+# Disable low speed limit and increase timeout for slow connections
 git config --global http.lowSpeedLimit 0
-git config --global http.lowSpeedTime 999999
-git config --global http.postBuffer 524288000
+git config --global http.lowSpeedTime 999999  # Very large timeout for extremely slow connections
+git config --global http.postBuffer 524288000  # 500MB buffer
 ```
 
 **Option 6 - Check firewall/antivirus | 选项 6 - 检查防火墙/杀毒软件**:
