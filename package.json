@@ -1,7 +1,7 @@
 {
   "name": "betting-system",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple betting system built with Next.js, TypeScript, Prisma, and SQLite",
   "main": "index.js",
   "engines": {
     "node": ">=20.9.0",
@@ -20,8 +20,16 @@
     "type": "git",
     "url": "git+https://github.com/xiaocao-xixi/betting-system.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "betting",
+    "nextjs",
+    "typescript",
+    "prisma",
+    "sqlite",
+    "ledger",
+    "demo"
+  ],
+  "author": "xiaocao-xixi",
   "license": "ISC",
   "type": "module",
   "bugs": {

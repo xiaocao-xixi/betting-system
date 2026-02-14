@@ -1,6 +1,23 @@
 # Betting System
 
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![Node.js](https://img.shields.io/badge/Node.js-20.9%2B-green.svg)](https://nodejs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.22-2D3748.svg)](https://www.prisma.io/)
+
 A full-stack betting system built with Next.js, Prisma, SQLite, and Docker. Features include user management, balance tracking through append-only ledger entries, bet placement, and settlement.
+
+## ⭐ Features
+
+- **User Management** - Create and manage users
+- **Balance Tracking** - Append-only ledger system for accurate balance calculation
+- **Bet Placement** - Place bets with balance validation
+- **Bet Settlement** - Settle bets with WIN/LOSE/VOID outcomes
+- **Transaction Safety** - Database transactions ensure data integrity
+- **Modern UI** - Clean, responsive interface with Tailwind CSS
+- **Type Safety** - Full TypeScript support
+- **Docker Support** - Easy deployment with Docker Compose
 
 ## 🚀 Quick Start
 
@@ -501,22 +518,37 @@ All original requirements have been implemented:
 
 ## 📄 License
 
-MIT
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) before submitting pull requests.
+
+### How to Contribute
+
 1. Fork the repository
-2. Create feature branch
-3. Make changes with tests
-4. Submit pull request
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
 ## 📧 Support
 
 For issues or questions:
-1. Check Troubleshooting section above
+1. Check [Troubleshooting](#-troubleshooting) section above
 2. Review API documentation
 3. Check Prisma logs: `npx prisma studio`
-4. Open GitHub issue
+4. Open a [GitHub issue](https://github.com/xiaocao-xixi/betting-system/issues)
+
+## 🙏 Acknowledgments
+
+Built with:
+- [Next.js](https://nextjs.org/) - React framework
+- [Prisma](https://www.prisma.io/) - Database ORM
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
 
 ---
 
