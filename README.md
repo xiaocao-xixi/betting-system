@@ -364,7 +364,7 @@ git clone https://hub.fastgit.xyz/xiaocao-xixi/betting-system.git
 ```bash
 # Increase timeout for slow connections
 git config --global http.lowSpeedLimit 1000  # Minimum speed in bytes/sec
-git config --global http.lowSpeedTime 300    # Timeout after 5 minutes of slow speed
+git config --global http.lowSpeedTime 300    # Abort if speed stays below limit for 300 sec (5 min)
 git config --global http.postBuffer 524288000  # 500MB buffer for large repos
 ```
 
