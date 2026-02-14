@@ -458,7 +458,7 @@ This project is configured for one-click Vercel deployment. See detailed instruc
 2. 在 Vercel 导入项目 | Import project in Vercel
 3. 添加 Vercel Postgres 数据库 | Add Vercel Postgres database
 4. 更新 `prisma/schema.prisma` 使用 PostgreSQL | Update schema to use PostgreSQL
-5. 部署并运行迁移 | Deploy and run migrations
+5. 部署项目并运行数据库迁移 | Deploy and run database migrations (see guide for details)
 
 ### Docker Production
 

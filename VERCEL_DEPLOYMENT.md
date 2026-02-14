@@ -25,8 +25,10 @@ This project supports deployment to Vercel. Since Vercel is a serverless environ
    - 在项目设置中，进入 "Storage" 标签页
    - 点击 "Create Database"
    - 选择 "Postgres"
-   - 选择区域（建议选择离用户最近的区域）
+   - 选择区域（建议选择 `hnd1` 东京区域，与 vercel.json 中配置一致，以降低延迟）
    - 创建数据库后，Vercel 会自动添加环境变量
+   
+   **注意**: 如果选择其他区域，请相应更新 `vercel.json` 中的 `regions` 配置。
 
 4. **配置环境变量 | Configure Environment Variables**
    
