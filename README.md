@@ -362,10 +362,10 @@ git clone https://hub.fastgit.xyz/xiaocao-xixi/betting-system.git
 
 **Option 5 - Increase Git timeout | 选项 5 - 增加 Git 超时时间**:
 ```bash
-# Disable low speed limit and increase timeout for slow connections
-git config --global http.lowSpeedLimit 0
-git config --global http.lowSpeedTime 999999  # Very large timeout for extremely slow connections
-git config --global http.postBuffer 524288000  # 500MB buffer
+# Increase timeout for slow connections
+git config --global http.lowSpeedLimit 1000  # Minimum speed in bytes/sec
+git config --global http.lowSpeedTime 300    # Timeout after 5 minutes of slow speed
+git config --global http.postBuffer 524288000  # 500MB buffer for large repos
 ```
 
 **Option 6 - Check firewall/antivirus | 选项 6 - 检查防火墙/杀毒软件**:
