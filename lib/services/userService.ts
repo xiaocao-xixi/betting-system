@@ -33,7 +33,7 @@ export async function calculateUserBalance(userId: string): Promise<number> {
  */
 export async function getAllUsersWithBalances(): Promise<UserWithBalance[]> {
   const users = await prisma.user.findMany({
-    orderBy: { email: 'asc' },
+    orderBy: { displayName: 'asc' },
   })
 
   const usersWithBalances = await Promise.all(
@@ -43,7 +43,23 @@ export async function getAllUsersWithBalances(): Promise<UserWithBalance[]> {
     }))
   )
 
-  return usersWithBalances
+  // Sort by numeric value in displayName (e.g., user1, user2, ..., user10)
+  // Extract numbers once for performance, then sort
+  const usersWithNumbers = usersWithBalances.map(user => {
+    const match = user.displayName.match(/\d+/)
+    const numericValue = match ? parseInt(match[0]) : Infinity
+    return { user, numericValue }
+  })
+
+  usersWithNumbers.sort((a, b) => {
+    if (a.numericValue !== b.numericValue) {
+      return a.numericValue - b.numericValue
+    }
+    // Secondary sort by full displayName for stable ordering
+    return a.user.displayName.localeCompare(b.user.displayName)
+  })
+
+  return usersWithNumbers.map(item => item.user)
 }
 
 /**
